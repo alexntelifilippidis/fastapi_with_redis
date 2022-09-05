@@ -7,7 +7,4 @@ venv/
 # mac
 .DS_Store
 
-.idea/
 .idea
-idea/
-..idea/
