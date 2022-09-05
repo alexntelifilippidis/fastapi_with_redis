@@ -1,0 +1,8 @@
+# venvs
+.venv/
+env/
+venv/
+.env
+
+# mac
+.DS_Store

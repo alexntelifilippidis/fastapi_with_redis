@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+
+  fastapi:
+    container_name: fastapi
+    build: ./API
+    environment:
+      REDIS_HOST: "redis"
+      REDIS_PASSWORD: "password"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - "redis"
+
+  redis:
+    container_name: redis
+    image: redis
+    command: ["redis-server",  "--requirepass", "password"]
+    ports:
+      - "6379:6379"
+
