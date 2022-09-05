@@ -6,3 +6,5 @@ venv/
 
 # mac
 .DS_Store
+
+.idea
