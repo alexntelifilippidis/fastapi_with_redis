@@ -70,5 +70,4 @@ def sync_star_wars_redis_pool(people: int):
         return (starwars, f"starwars run  in {time.perf_counter() - s} seconds")
     except Exception as e:
         starwars = get_sync_values(people)
-        return (starwars, f"starwars run  in {time.perf_counter() - s} seconds",e)
-
+        return (starwars, f"starwars run  in {time.perf_counter() - s} seconds", e)
