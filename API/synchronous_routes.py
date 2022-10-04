@@ -67,6 +67,8 @@ def sync_star_wars_redis_pool(people: int):
         r = redis.Redis(connection_pool=pool, decode_responses=True)
         pipe = r.pipeline()
         starwars = pipe.get(people).execute()
-    except:
+        return (starwars, f"starwars run  in {time.perf_counter() - s} seconds")
+    except Exception as e:
         starwars = get_sync_values(people)
-    return (starwars, f"starwars run  in {time.perf_counter() - s} seconds")
+        return (starwars, f"starwars run  in {time.perf_counter() - s} seconds",e)
+
