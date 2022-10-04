@@ -1,8 +1,11 @@
 import time
 
 import pandas as pd
+import redis
 import requests
 from fastapi import APIRouter
+
+pool = redis.ConnectionPool(host="127.0.0.1", port="6379", password="password", db=0)
 
 synchronous = APIRouter(prefix="/synchronous", tags=["synchronous"])
 
@@ -44,4 +47,26 @@ def get_sync_values(number):
 def sync_star_wars(people: int):
     s = time.perf_counter()
     starwars = get_sync_values(people)
+    return (starwars, f"starwars run  in {time.perf_counter() - s} seconds")
+
+
+@synchronous.get("/save_redis_sync_star_wars")
+def save_redis_sync_star_wars(people: int):
+    s = time.perf_counter()
+    starwars = get_sync_values(people)
+    r = redis.Redis(connection_pool=pool, decode_responses=True)
+    starwars = starwars.to_dict()
+    r.set(people, str(starwars))
+    return (starwars, f"starwars run  in {time.perf_counter() - s} seconds")
+
+
+@synchronous.get("/sync_star_wars_redis_pool")
+def sync_star_wars_redis_pool(people: int):
+    s = time.perf_counter()
+    try:
+        r = redis.Redis(connection_pool=pool, decode_responses=True)
+        pipe = r.pipeline()
+        starwars = pipe.get(people).execute()
+    except:
+        starwars = get_sync_values(people)
     return (starwars, f"starwars run  in {time.perf_counter() - s} seconds")

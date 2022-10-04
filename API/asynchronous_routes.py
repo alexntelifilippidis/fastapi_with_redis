@@ -64,12 +64,24 @@ async def async_star_wars(people: int):
     return (star_wars_people, f"starwars run in {time.perf_counter() - s} seconds")
 
 
+@asynchronous.get("/async_star_wars_connection_pool")
+async def async_star_wars_connection_pool(people: int):
+    s = time.perf_counter()
+    try:
+        star_wars_people = StarWarsInfo.get(pk=people)
+    except NotFoundError:
+        star_wars_people = await get_async_values(people)
+
+    return (star_wars_people, f"starwars run in {time.perf_counter() - s} seconds")
+
+
 @asynchronous.post("/save_async_star_wars")
 async def save_async_star_wars(people: int):
     star_wars_people = await get_async_values(people)
-    star = StarWarsInfo(pk=people,
-                        name=str(star_wars_people.to_dict('dict')["name"]),
-                        planet=str(star_wars_people.to_dict('dict')["planet"])
-                        )
+    star = StarWarsInfo(
+        pk=people,
+        name=str(star_wars_people.to_dict("dict")["name"]),
+        planet=str(star_wars_people.to_dict("dict")["planet"]),
+    )
 
     return star.save()

@@ -3,7 +3,6 @@ from fastapi import FastAPI
 
 from API import asynchronous_routes, synchronous_routes
 
-
 app = FastAPI()
 app.include_router(synchronous_routes.synchronous)
 app.include_router(asynchronous_routes.asynchronous)

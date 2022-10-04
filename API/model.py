@@ -1,6 +1,4 @@
-from redis_om import HashModel
-from redis_om import get_redis_connection
-
+from redis_om import HashModel, get_redis_connection
 
 redis = get_redis_connection(
     host="127.0.0.1",
